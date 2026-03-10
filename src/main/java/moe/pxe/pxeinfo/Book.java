@@ -23,6 +23,10 @@ public class Book {
         this.item = item;
     }
 
+    protected Book(String name) {
+        this.name = name;
+    }
+
     public Book(String name, ItemStack item) {
         this.name = name;
         this.item = item;

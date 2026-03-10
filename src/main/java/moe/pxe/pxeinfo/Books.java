@@ -1,19 +1,20 @@
 package moe.pxe.pxeinfo;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Books {
     private static final HashMap<String, Book> BOOKS = new HashMap<>();
     private static String motdBook;
     private static Long motdLastUpdated;
+
+    private static final Book tableOfContentsBook = new TableOfContents();
 
     public static Book getBook(String name) {
         return BOOKS.get(name);
@@ -30,19 +31,25 @@ public class Books {
     }
 
     public static Book[] getAllBooks() {
-        return BOOKS.values().toArray(new Book[0]);
+        Collection<Book> values = BOOKS.values();
+        return values.toArray(new Book[0]);
+    }
+
+    private static Book loadBook(Book book, MemorySection section) {
+        book.setDisplayName(section.getRichMessage("display-name"));
+        book.setDescription(section.getRichMessage("description"));
+        book.setPermission(section.getString("permission"));
+        book.setItem(section.getItemStack("book"));
+        return book;
     }
 
     public static void loadBooks(FileConfiguration config) {
         ConfigurationSection booksSection = config.getConfigurationSection("books");
         if (booksSection != null) booksSection.getValues(true).forEach((name, obj) -> {
             if (!(obj instanceof MemorySection section)) return;
-            Component displayName = section.getRichMessage("display-name");
-            Component description = section.getRichMessage("description");
-            String permission = section.getString("permission");
-            ItemStack item = section.getItemStack("book");
-
-            BOOKS.put(name, new Book(name, displayName, description, permission, item));
+            Book book = new Book(name);
+            if (name.equals("toc")) book = tableOfContentsBook;
+            BOOKS.put(name, loadBook(book, section));
         });
 
         ConfigurationSection motdSection = config.getConfigurationSection("motd");
@@ -52,18 +59,21 @@ public class Books {
         }
     }
 
+    private static void saveBook(Book book, FileConfiguration config) {
+        String name = book.getName();
+        config.setRichMessage("books."+name+".display-name", book.getDisplayName());
+        config.setRichMessage("books."+name+".description", book.getDescription());
+        config.set("books."+name+".permission", book.getPermission());
+        config.set("books."+name+".book", book.getItem());
+    }
+
     public static void flushBooks(FileConfiguration config) {
         try {
             config.loadFromString("");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (Map.Entry<String, Book> book : BOOKS.entrySet()) {
-            config.setRichMessage("books."+book.getKey()+".display-name", book.getValue().getDisplayName());
-            config.setRichMessage("books."+book.getKey()+".description", book.getValue().getDescription());
-            config.set("books."+book.getKey()+".permission", book.getValue().getPermission());
-            config.set("books."+book.getKey()+".book", book.getValue().getItem());
-        }
+        for (Book book : getAllBooks()) saveBook(book, config);
         if (motdBook != null) {
             config.set("motd.name", motdBook);
             config.set("motd.last-updated", motdLastUpdated);
@@ -81,5 +91,9 @@ public class Books {
 
     public static Long getMotdLastUpdated() {
         return motdLastUpdated;
+    }
+
+    public static Book getTableOfContents() {
+        return tableOfContentsBook;
     }
 }

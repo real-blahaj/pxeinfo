@@ -15,8 +15,11 @@ public class DeleteBookCommand {
         return Commands.literal("delete")
                 .requires(ctx -> ctx.getSender().hasPermission("info.delete") || ctx.getSender().isOp())
                 .executes(ctx -> {
-                    String bookName = ctx.getArgument("book", Book.class).getName();
-                    Books.deleteBook(bookName);
+                    Book book = ctx.getArgument("book", Book.class);
+                    String bookName = book.getName();
+
+                    if (bookName.equals("toc")) book.setItem(null);
+                    else Books.deleteBook(bookName);
                     Main.getInstance().saveBooksConfig();
 
                     ctx.getSource().getSender().playSound(Main.DELETE_SOUND);
