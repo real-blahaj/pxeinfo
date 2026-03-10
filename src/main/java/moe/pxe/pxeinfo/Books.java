@@ -37,7 +37,6 @@ public class Books {
         ConfigurationSection booksSection = config.getConfigurationSection("books");
         if (booksSection != null) booksSection.getValues(true).forEach((name, obj) -> {
             if (!(obj instanceof MemorySection section)) return;
-            if (!section.contains("book")) return;
             Component displayName = section.getRichMessage("display-name");
             Component description = section.getRichMessage("description");
             String permission = section.getString("permission");
