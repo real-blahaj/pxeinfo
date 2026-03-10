@@ -62,6 +62,7 @@ public class Books {
         for (Map.Entry<String, Book> book : BOOKS.entrySet()) {
             config.setRichMessage("books."+book.getKey()+".display-name", book.getValue().getDisplayName());
             config.setRichMessage("books."+book.getKey()+".description", book.getValue().getDescription());
+            config.set("books."+book.getKey()+".permission", book.getValue().getPermission());
             config.set("books."+book.getKey()+".book", book.getValue().getItem());
         }
         if (motdBook != null) {
