@@ -34,7 +34,8 @@ public class Books {
     }
 
     public static void loadBooks(FileConfiguration config) {
-        config.getValues(true).forEach((name, obj) -> {
+        ConfigurationSection booksSection = config.getConfigurationSection("books");
+        if (booksSection != null) booksSection.getValues(true).forEach((name, obj) -> {
             if (!(obj instanceof MemorySection section)) return;
             if (!section.contains("book")) return;
             Component displayName = section.getRichMessage("display-name");
@@ -59,9 +60,13 @@ public class Books {
             e.printStackTrace();
         }
         for (Map.Entry<String, Book> book : BOOKS.entrySet()) {
-            config.setRichMessage(book.getKey()+".display-name", book.getValue().getDisplayName());
-            config.setRichMessage(book.getKey()+".description", book.getValue().getDescription());
-            config.set(book.getKey()+".book", book.getValue().getItem());
+            config.setRichMessage("books."+book.getKey()+".display-name", book.getValue().getDisplayName());
+            config.setRichMessage("books."+book.getKey()+".description", book.getValue().getDescription());
+            config.set("books."+book.getKey()+".book", book.getValue().getItem());
+        }
+        if (motdBook != null) {
+            config.set("motd.name", motdBook);
+            config.set("motd.last-updated", motdLastUpdated);
         }
     }
 
