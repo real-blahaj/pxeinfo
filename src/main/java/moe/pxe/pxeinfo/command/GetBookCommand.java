@@ -7,6 +7,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
+import moe.pxe.pxeinfo.Main;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,6 +28,7 @@ public class GetBookCommand {
         ItemStack book = ctx.getArgument("book", Book.class).getItem();
         book.setAmount(amount);
         player.give(book);
+        player.playSound(Main.GET_SOUND);
 
         ctx.getSource().getSender().sendMessage(Component.translatable("commands.give.success.single").arguments(
                 Component.text(amount),

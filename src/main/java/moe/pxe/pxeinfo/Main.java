@@ -17,6 +17,7 @@ public final class Main extends JavaPlugin {
     private static Main INSTANCE;
 
     public static final Sound OPEN_BOOK_SOUND = Sound.sound(Key.key("block.chiseled_bookshelf.pickup.enchanted"), Sound.Source.MASTER, 1f, 1f);
+    public static final Sound GET_SOUND = Sound.sound(Key.key("entity.item.pickup"), Sound.Source.MASTER, 0.65f, 1f);
     public static final Sound MODIFY_SOUND = Sound.sound(Key.key("entity.item_frame.place"), Sound.Source.MASTER, 0.75f, 1.25f);
     public static final Sound REMOVE_SOUND = Sound.sound(Key.key("entity.item_frame.remove_item"), Sound.Source.MASTER, 0.75f, 0.793701f);
     public static final Sound DELETE_SOUND = Sound.sound(Key.key("block.fire.extinguish"), Sound.Source.MASTER, 0.75f, 2f);

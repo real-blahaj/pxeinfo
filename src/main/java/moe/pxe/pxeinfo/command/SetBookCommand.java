@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
+import moe.pxe.pxeinfo.Main;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,7 +30,9 @@ public class SetBookCommand {
 
                     Book book = ctx.getArgument("book", Book.class);
                     book.setItem(heldItem);
+
                     ctx.getSource().getSender().sendRichMessage("Set info book <book> to held item", Placeholder.component("book", book.getComponent()));
+                    ctx.getSource().getSender().playSound(Main.MODIFY_SOUND);
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

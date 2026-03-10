@@ -6,6 +6,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
 import moe.pxe.pxeinfo.Books;
+import moe.pxe.pxeinfo.Main;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class DeleteBookCommand {
@@ -16,6 +17,8 @@ public class DeleteBookCommand {
                 .executes(ctx -> {
                     String bookName = ctx.getArgument("book", Book.class).getName();
                     Books.deleteBook(bookName);
+
+                    ctx.getSource().getSender().playSound(Main.DELETE_SOUND);
                     ctx.getSource().getSender().sendRichMessage("Deleted info book <book>", Placeholder.unparsed("book", bookName));
                     return Command.SINGLE_SUCCESS;
                 })
