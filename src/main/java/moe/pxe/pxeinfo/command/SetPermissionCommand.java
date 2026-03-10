@@ -7,13 +7,9 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
 import moe.pxe.pxeinfo.Main;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class SetPermissionCommand {
-
-    private static final MiniMessage MINIMESSAGE = MiniMessage.miniMessage();
 
     public static LiteralCommandNode<CommandSourceStack> getCommand() {
         return Commands.literal("permission")
