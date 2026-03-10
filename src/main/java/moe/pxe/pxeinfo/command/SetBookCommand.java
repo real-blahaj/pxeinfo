@@ -30,6 +30,7 @@ public class SetBookCommand {
 
                     Book book = ctx.getArgument("book", Book.class);
                     book.setItem(heldItem);
+                    Main.getInstance().saveBooksConfig();
 
                     ctx.getSource().getSender().sendRichMessage("Set info book <book> to held item", Placeholder.component("book", book.getComponent()));
                     ctx.getSource().getSender().playSound(Main.MODIFY_SOUND);

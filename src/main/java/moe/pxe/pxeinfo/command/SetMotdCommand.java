@@ -25,6 +25,7 @@ public class SetMotdCommand {
                 .executes(ctx -> {
                     String bookName = ctx.getArgument("book", Book.class).getName();
                     Books.setMotdBook(bookName);
+                    Main.getInstance().saveBooksConfig();
 
                     ctx.getSource().getSender().playSound(Main.MODIFY_SOUND);
                     ctx.getSource().getSender().sendRichMessage("Set MOTD book to <book>\n<gray><i>This book will now open whenever players first log in after now.", Placeholder.unparsed("book", bookName));

@@ -17,6 +17,7 @@ public class DeleteBookCommand {
                 .executes(ctx -> {
                     String bookName = ctx.getArgument("book", Book.class).getName();
                     Books.deleteBook(bookName);
+                    Main.getInstance().saveBooksConfig();
 
                     ctx.getSource().getSender().playSound(Main.DELETE_SOUND);
                     ctx.getSource().getSender().sendRichMessage("Deleted info book <book>", Placeholder.unparsed("book", bookName));
