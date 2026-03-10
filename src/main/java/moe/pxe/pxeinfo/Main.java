@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public final class Main extends JavaPlugin {
 
@@ -32,7 +33,9 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new Events(), this);
 
-        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> commands.registrar().register(RootCommand.getCommand()));
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
+                commands.registrar().register(RootCommand.getCommand(), "Displays help in the form of informational books", List.of("book"))
+        );
     }
 
     @Override
