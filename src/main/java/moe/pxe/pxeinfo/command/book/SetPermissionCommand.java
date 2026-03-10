@@ -1,4 +1,4 @@
-package moe.pxe.pxeinfo.command;
+package moe.pxe.pxeinfo.command.book;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -7,41 +7,37 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
 import moe.pxe.pxeinfo.Main;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
-public class SetDescriptionCommand {
-
-    private static final MiniMessage MINIMESSAGE = MiniMessage.miniMessage();
+public class SetPermissionCommand {
 
     public static LiteralCommandNode<CommandSourceStack> getCommand() {
-        return Commands.literal("description")
-                .requires(ctx -> ctx.getSender().hasPermission("info.description") || ctx.getSender().isOp())
-                .then(Commands.argument("description", StringArgumentType.greedyString())
+        return Commands.literal("permission")
+                .requires(ctx -> ctx.getSender().hasPermission("info.permission") || ctx.getSender().isOp())
+                .then(Commands.argument("permission", StringArgumentType.greedyString())
                         .suggests((context, builder) -> {
-                            Component description = context.getArgument("book", Book.class).getDescription();
-                            if (description != null) builder.suggest(MINIMESSAGE.serialize(description));
+                            String permission = context.getArgument("book", Book.class).getPermission();
+                            if (permission != null) builder.suggest(permission);
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
                             Book book = ctx.getArgument("book", Book.class);
-                            Component description = MINIMESSAGE.deserialize(ctx.getArgument("description", String.class));
+                            String permission = ctx.getArgument("permission", String.class);
 
-                            book.setDescription(description);
+                            book.setPermission(permission);
                             Main.getInstance().saveBooksConfig();
-                            ctx.getSource().getSender().sendRichMessage("Set description of info book to <description>", Placeholder.component("description", description));
+                            ctx.getSource().getSender().sendRichMessage("Set required permission of info book to <permission>", Placeholder.unparsed("permission", permission));
                             ctx.getSource().getSender().playSound(Main.MODIFY_SOUND);
                             return Command.SINGLE_SUCCESS;
                         }))
                 .executes(ctx -> {
                     Book book = ctx.getArgument("book", Book.class);
 
-                    book.setDescription(null);
+                    book.setPermission(null);
                     Main.getInstance().saveBooksConfig();
 
                     ctx.getSource().getSender().playSound(Main.REMOVE_SOUND);
-                    ctx.getSource().getSender().sendRichMessage("Removed description from <book>", Placeholder.component("book", book.getComponent()));
+                    ctx.getSource().getSender().sendRichMessage("Removed required permission from <book>", Placeholder.component("book", book.getComponent()));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

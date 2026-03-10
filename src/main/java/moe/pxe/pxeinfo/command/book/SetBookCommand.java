@@ -1,4 +1,4 @@
-package moe.pxe.pxeinfo.command;
+package moe.pxe.pxeinfo.command.book;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;

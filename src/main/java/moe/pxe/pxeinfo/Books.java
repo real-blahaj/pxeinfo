@@ -15,6 +15,7 @@ public class Books {
     private static Long motdLastUpdated;
 
     private static final Book tableOfContentsBook = new TableOfContents();
+    private static boolean useTableOfContents = false;
 
     public static Book getBook(String name) {
         return BOOKS.get(name);
@@ -44,13 +45,17 @@ public class Books {
     }
 
     public static void loadBooks(FileConfiguration config) {
+        BOOKS.clear();
+        useTableOfContents = Main.getInstance().getConfig().getBoolean("table-of-contents.enabled");
+
         ConfigurationSection booksSection = config.getConfigurationSection("books");
         if (booksSection != null) booksSection.getValues(true).forEach((name, obj) -> {
             if (!(obj instanceof MemorySection section)) return;
             Book book = new Book(name);
-            if (name.equals("toc")) book = tableOfContentsBook;
+            if (name.equals("toc") && useTableOfContents) book = tableOfContentsBook;
             BOOKS.put(name, loadBook(book, section));
         });
+        if (!BOOKS.containsKey("toc") && useTableOfContents) BOOKS.put("toc", tableOfContentsBook);
 
         ConfigurationSection motdSection = config.getConfigurationSection("motd");
         if (motdSection != null) {
@@ -94,6 +99,7 @@ public class Books {
     }
 
     public static Book getTableOfContents() {
-        return tableOfContentsBook;
+        if (useTableOfContents) return tableOfContentsBook;
+        return getBook("toc");
     }
 }

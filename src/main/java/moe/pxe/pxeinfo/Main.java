@@ -1,6 +1,7 @@
 package moe.pxe.pxeinfo;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import moe.pxe.pxeinfo.command.PxeInfoCommand;
 import moe.pxe.pxeinfo.command.RootCommand;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -16,7 +17,8 @@ public final class Main extends JavaPlugin {
 
     private static Main INSTANCE;
 
-    public static final Sound OPEN_BOOK_SOUND = Sound.sound(Key.key("block.chiseled_bookshelf.pickup.enchanted"), Sound.Source.MASTER, 1f, 1f);
+    public static final Sound OPEN_BOOK_SOUND = Sound.sound(Key.key("item.book.page_turn"), Sound.Source.MASTER, 1f, 1f);
+    public static final Sound OPEN_TOC_SOUND = Sound.sound(Key.key("block.chiseled_bookshelf.pickup.enchanted"), Sound.Source.MASTER, 1f, 1f);
     public static final Sound GET_SOUND = Sound.sound(Key.key("entity.item.pickup"), Sound.Source.MASTER, 0.65f, 1f);
     public static final Sound MODIFY_SOUND = Sound.sound(Key.key("entity.item_frame.place"), Sound.Source.MASTER, 0.75f, 1.25f);
     public static final Sound REMOVE_SOUND = Sound.sound(Key.key("entity.item_frame.remove_item"), Sound.Source.MASTER, 0.75f, 0.793701f);
@@ -29,19 +31,24 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         INSTANCE = this;
+        saveDefaultConfig();
         createBooksConfig();
         reloadBooksConfig();
 
         getServer().getPluginManager().registerEvents(new Events(), this);
 
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands ->
-                commands.registrar().register(RootCommand.getCommand(), "Displays help in the form of informational books", List.of("book"))
+                {
+                    commands.registrar().register(RootCommand.getCommand(), "Displays help in the form of informational books", List.of("book"));
+                    commands.registrar().register(PxeInfoCommand.getCommand(), "Manage the pxeinfo plugin");
+                }
         );
     }
 
     @Override
     public void onDisable() {
         saveBooksConfig();
+        saveConfig();
     }
 
     public static Main getInstance() {

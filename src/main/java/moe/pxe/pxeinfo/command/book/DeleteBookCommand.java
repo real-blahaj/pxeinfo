@@ -1,4 +1,4 @@
-package moe.pxe.pxeinfo.command;
+package moe.pxe.pxeinfo.command.book;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -7,6 +7,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
 import moe.pxe.pxeinfo.Books;
 import moe.pxe.pxeinfo.Main;
+import moe.pxe.pxeinfo.TableOfContents;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class DeleteBookCommand {
@@ -18,7 +19,7 @@ public class DeleteBookCommand {
                     Book book = ctx.getArgument("book", Book.class);
                     String bookName = book.getName();
 
-                    if (bookName.equals("toc")) book.setItem(null);
+                    if (book instanceof TableOfContents) book.setItem(null);
                     else Books.deleteBook(bookName);
                     Main.getInstance().saveBooksConfig();
 

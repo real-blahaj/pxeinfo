@@ -1,4 +1,4 @@
-package moe.pxe.pxeinfo.command;
+package moe.pxe.pxeinfo.command.book;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -11,37 +11,37 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
-public class SetDisplayNameCommand {
+public class SetDescriptionCommand {
 
     private static final MiniMessage MINIMESSAGE = MiniMessage.miniMessage();
 
     public static LiteralCommandNode<CommandSourceStack> getCommand() {
-        return Commands.literal("displayname")
-                .requires(ctx -> ctx.getSender().hasPermission("info.displayname") || ctx.getSender().isOp())
-                .then(Commands.argument("name", StringArgumentType.greedyString())
+        return Commands.literal("description")
+                .requires(ctx -> ctx.getSender().hasPermission("info.description") || ctx.getSender().isOp())
+                .then(Commands.argument("description", StringArgumentType.greedyString())
                         .suggests((context, builder) -> {
-                            Component displayName = context.getArgument("book", Book.class).getDisplayName();
-                            if (displayName != null) builder.suggest(MINIMESSAGE.serialize(displayName));
+                            Component description = context.getArgument("book", Book.class).getDescription();
+                            if (description != null) builder.suggest(MINIMESSAGE.serialize(description));
                             return builder.buildFuture();
                         })
                         .executes(ctx -> {
                             Book book = ctx.getArgument("book", Book.class);
-                            Component name = MINIMESSAGE.deserialize(ctx.getArgument("name", String.class));
+                            Component description = MINIMESSAGE.deserialize(ctx.getArgument("description", String.class));
 
-                            book.setDisplayName(name);
+                            book.setDescription(description);
                             Main.getInstance().saveBooksConfig();
-                            ctx.getSource().getSender().sendRichMessage("Set display name of info book to <name>", Placeholder.component("name", name));
+                            ctx.getSource().getSender().sendRichMessage("Set description of info book to <description>", Placeholder.component("description", description));
                             ctx.getSource().getSender().playSound(Main.MODIFY_SOUND);
                             return Command.SINGLE_SUCCESS;
                         }))
                 .executes(ctx -> {
                     Book book = ctx.getArgument("book", Book.class);
 
-                    book.setDisplayName(null);
+                    book.setDescription(null);
                     Main.getInstance().saveBooksConfig();
 
                     ctx.getSource().getSender().playSound(Main.REMOVE_SOUND);
-                    ctx.getSource().getSender().sendRichMessage("Removed display name from <book>", Placeholder.component("book", book.getComponent()));
+                    ctx.getSource().getSender().sendRichMessage("Removed description from <book>", Placeholder.component("book", book.getComponent()));
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

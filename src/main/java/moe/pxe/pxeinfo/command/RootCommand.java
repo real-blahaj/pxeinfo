@@ -7,7 +7,9 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import moe.pxe.pxeinfo.Book;
 import moe.pxe.pxeinfo.Books;
+import moe.pxe.pxeinfo.Main;
 import moe.pxe.pxeinfo.command.argument.BookArgument;
+import moe.pxe.pxeinfo.command.book.*;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,7 +24,6 @@ public class RootCommand {
                         .then(SetBookCommand.getCommand())
                         .then(DeleteBookCommand.getCommand())
                         .then(GetBookCommand.getCommand())
-                        .then(SetMotdCommand.getCommand())
                         .then(SetDisplayNameCommand.getCommand())
                         .then(SetDescriptionCommand.getCommand())
                         .then(SetPermissionCommand.getCommand())
@@ -52,6 +53,7 @@ public class RootCommand {
                                     }
 
                                     Book book = Books.newBook(ctx.getArgument("name", String.class), heldItem);
+                                    Main.getInstance().saveBooksConfig();
                                     ctx.getSource().getSender().sendRichMessage("Created new info book <book>", Placeholder.component("book", book.getComponent()));
                                     return Command.SINGLE_SUCCESS;
                                 })))
@@ -61,7 +63,12 @@ public class RootCommand {
                         return 0;
                     }
 
-                    Books.getTableOfContents().openBook(player);
+                    Book toc = Books.getTableOfContents();
+                    if (toc == null) {
+                        ctx.getSource().getSender().sendRichMessage("<red>Please specify a book to view.");
+                        return 0;
+                    }
+                    toc.openBook(player);
                     return Command.SINGLE_SUCCESS;
                 })
                 .build();

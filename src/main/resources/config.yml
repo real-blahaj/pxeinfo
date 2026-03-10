@@ -1,0 +1,20 @@
+#    ██▀▀██ ██  ██ ██▀▀▀▀ ▀▀██▀▀ ██  ██ ██▀▀▀▀ ██▀▀██    #
+#    ██▄▄██ ▀▀▄▄▀▀ ██▄▄     ██   ███ ██ ██▄▄   ██  ██    #
+#    ██     ▄▄▀▀▄▄ ██       ██   ██ ███ ██     ██  ██    #
+#    ██     ██  ██ ██▄▄▄▄ ▄▄██▄▄ ██  ██ ██     ██▄▄██    #
+# ====================================================== #
+#    pxeinfo config                                      #
+
+#    Table of Contents
+#    » Places a list of info books at the end of the
+#    'toc' book. If disabled, no TOC book will be
+#    generated; however, TOC will still be used for
+#    /info.
+table-of-contents:
+  enabled: true
+  header: <dark_aqua>Table of Contents</dark_aqua> <gray>(<book_count>)</gray>
+  empty-page: |
+    <dark_aqua>Table of Contents</dark_aqua>
+
+    <dark_gray>No info books found!</dark_gray>
+    <gray><i>Either no books have been created or you don't have permission to view any of them.
