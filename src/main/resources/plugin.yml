@@ -1,0 +1,8 @@
+name: pxeinfo
+version: '1.0'
+main: moe.pxe.pxeinfo.Main
+api-version: '1.21'
+prefix: pxeinfo
+authors: [ pixiboot ]
+description: Adds an /info command with some extra features on top.
+website: pxe.moe
