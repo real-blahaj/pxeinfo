@@ -54,7 +54,7 @@ public class RootCommand {
             idx++;
             if (idx % 12 == 0) {
                 if (idx > 0) bookPages.add(currentPage);
-                currentPage = MINIMESSAGE.deserialize("<dark_aqua>Warps</dark_aqua> <gray>(<warp_count>)</gray>\n", Placeholder.unparsed("warp_count", String.valueOf(books.length)));
+                currentPage = MINIMESSAGE.deserialize("<dark_aqua>Table of Contents</dark_aqua> <gray>(<warp_count>)</gray>\n", Placeholder.unparsed("warp_count", String.valueOf(books.length)));
             }
             currentPage = currentPage.append(MINIMESSAGE.deserialize("\n<dark_gray>•</dark_gray> <warp>", Placeholder.component("warp", book.getComponent())));
         }
