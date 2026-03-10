@@ -40,7 +40,8 @@ public class RootCommand {
         int idx = -1;
         Component currentPage = Component.empty();
         Book[] books = Arrays.stream(Books.getAllBooks())
-                .filter(warp -> warp.hasPermission(ctx.getSource().getSender()))
+                .filter(book -> book.hasPermission(ctx.getSource().getSender()))
+                .filter(book -> !book.getName().equals("main"))
                 .toArray(Book[]::new);
         if (books.length == 0) {
             currentPage = MINIMESSAGE.deserialize("""

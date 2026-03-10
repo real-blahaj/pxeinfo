@@ -22,7 +22,7 @@ public class GetBookCommand {
         Integer amount = 1;
         try {
             amount = ctx.getArgument("amount", Integer.class);
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
 
         ItemStack book = ctx.getArgument("book", Book.class).getItem();
         book.setAmount(amount);
