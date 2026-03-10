@@ -14,6 +14,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (Books.getMotdBook() != null) return;
         PersistentDataContainer container = event.getPlayer().getPersistentDataContainer();
         Long motdSeenTimestamp = container.get(MOTD_SEEN_KEY, PersistentDataType.LONG);
         if (motdSeenTimestamp != null && motdSeenTimestamp > Books.getMotdLastUpdated()) return;
