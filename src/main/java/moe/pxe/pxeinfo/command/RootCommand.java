@@ -70,6 +70,7 @@ public class RootCommand {
                 .then(Commands.argument("book", new BookArgument())
                         .then(SetBookCommand.getCommand())
                         .then(DeleteBookCommand.getCommand())
+                        .then(GetBookCommand.getCommand())
                         .executes(ctx -> {
                             if (!(ctx.getSource().getExecutor() instanceof final Player player)) {
                                 ctx.getSource().getSender().sendRichMessage("<red><tr:permissions.requires.player>");
