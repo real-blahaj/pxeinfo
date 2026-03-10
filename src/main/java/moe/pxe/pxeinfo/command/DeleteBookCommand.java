@@ -11,7 +11,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 public class DeleteBookCommand {
 
     public static LiteralCommandNode<CommandSourceStack> getCommand() {
-        return Commands.literal("del")
+        return Commands.literal("delete")
                 .requires(ctx -> ctx.getSender().hasPermission("info.delete") || ctx.getSender().isOp())
                 .executes(ctx -> {
                     String bookName = ctx.getArgument("book", Book.class).getName();
