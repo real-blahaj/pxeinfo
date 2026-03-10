@@ -48,8 +48,8 @@ public class Books {
 
         ConfigurationSection motdSection = config.getConfigurationSection("motd");
         if (motdSection != null) {
-            motdBook = motdSection.getString("motd.name");
-            motdLastUpdated = motdSection.getLong("motd.last-updated");
+            motdBook = motdSection.getString("name");
+            motdLastUpdated = motdSection.getLong("last-updated");
         }
     }
 
