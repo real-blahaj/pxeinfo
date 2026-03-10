@@ -19,11 +19,14 @@ public class GetBookCommand {
             return 0;
         }
 
-        Integer amount = ctx.getArgument("amount", Integer.class);
-        if (amount == null) amount = 1;
+        Integer amount = 1;
+        try {
+            amount = ctx.getArgument("amount", Integer.class);
+        } catch (Exception e) {}
 
         ItemStack book = ctx.getArgument("book", Book.class).getItem();
         book.setAmount(amount);
+        player.give(book);
 
         ctx.getSource().getSender().sendMessage(Component.translatable("commands.give.success.single").arguments(
                 Component.text(amount),
