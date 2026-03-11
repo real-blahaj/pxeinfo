@@ -46,14 +46,21 @@ public class RootCommand {
                                         return 0;
                                     }
 
+                                    String name = ctx.getArgument("name", String.class);
+                                    if (Books.getBook(name) != null) {
+                                        ctx.getSource().getSender().sendRichMessage("<red>This info book already exists.");
+                                    }
+
                                     ItemStack heldItem = player.getInventory().getItemInMainHand();
                                     if (!heldItem.getType().equals(Material.WRITTEN_BOOK)) {
                                         ctx.getSource().getSender().sendRichMessage("<red>You must be holding a <tr:item.minecraft.writable_book>");
                                         return 0;
                                     }
 
-                                    Book book = Books.newBook(ctx.getArgument("name", String.class), heldItem);
+                                    Book book = Books.newBook(name, heldItem);
                                     Main.getInstance().saveBooksConfig();
+
+                                    ctx.getSource().getSender().playSound(Main.MODIFY_SOUND);
                                     ctx.getSource().getSender().sendRichMessage("Created new info book <book>", Placeholder.component("book", book.getComponent()));
                                     return Command.SINGLE_SUCCESS;
                                 })))
